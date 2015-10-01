@@ -12,6 +12,8 @@
 #include "shader.hpp"
 #include <vector>
 
+void RenderScene6();
+
 namespace ttl {
 	std::string file2str(const std::string &filename);
 }
@@ -126,11 +128,14 @@ void Idle()
 		}
 		sp_key =0;
 		// Camera matrix
-		View = glm::lookAt(
-			position, // Camera is at position, in World Space
-			position+direction, // and looks here : at the same position, plus "direction"
-			up                  // Head is up (set to 0,-1,0 to look upside-down)
-		);
+		if (g_eCurrentScene != 6)
+		{
+			View = glm::lookAt(
+				position, // Camera is at position, in World Space
+				position+direction, // and looks here : at the same position, plus "direction"
+				up                  // Head is up (set to 0,-1,0 to look upside-down)
+			);
+		}
 		glutPostRedisplay();
 		// std::cout << position.x << " " << position.y <<  " " << position.z << std::endl;
 	}
@@ -138,6 +143,16 @@ void Idle()
 	{
 		counter = counter + 0.002 * dt;
 		MODEL_EVERYTHING = glm::translate(MODEL_EVERYTHING, glm::vec3(0, 0, 0.0013 * counter));
+		MODEL_LEG_1 = glm::rotate(MODEL_LEG_1, float(cos(counter)), glm::vec3(1, 0, 0));
+		MODEL_LEG_2 = glm::rotate(MODEL_LEG_2, float(-cos(counter)), glm::vec3(1, 0, 0));
+	}
+	if (g_eCurrentScene == 6)
+	{
+		counter += 0.002 * dt;
+		constexpr const float CONSTANT_INC = 0.0013f;
+		View = glm::rotate(View, static_cast<float>(cos(counter)), glm::vec3(1, 0, 0));
+		View = glm::translate(View, glm::vec3(0, 0, -CONSTANT_INC * counter));
+		MODEL_EVERYTHING = glm::translate(MODEL_EVERYTHING, glm::vec3(0, 0, CONSTANT_INC * counter));
 		MODEL_LEG_1 = glm::rotate(MODEL_LEG_1, float(cos(counter)), glm::vec3(1, 0, 0));
 		MODEL_LEG_2 = glm::rotate(MODEL_LEG_2, float(-cos(counter)), glm::vec3(1, 0, 0));
 	}
@@ -198,6 +213,23 @@ void KeyboardGL( unsigned char c, int x, int y )
 		{
 			glClearColor( 0.7f, 0.7f, 0.7f, 1.0f );                      // Light-Gray background
 			g_eCurrentScene = 5;
+			// THIS MODEL WILL BE APPLIED TO THE WHOLE SCENE 5
+			MODEL_EVERYTHING=glm::mat4(1.0f); // Identity
+			// THIS MODEL WILL BE APPLIED TO LEG 1
+			MODEL_LEG_1=glm::mat4(1.0f);
+			// THIS MODEL WILL BE APPLIED TO LEG 2
+			MODEL_LEG_2=glm::mat4(1.0f);
+		}
+		break;
+		case '6':
+		{
+			glClearColor( 0.7f, 0.7f, 0.7f, 1.0f );                      // Light-Gray background
+			g_eCurrentScene = 6;
+			View = glm::lookAt(
+				glm::vec3(5.63757, -0.7351, 0), // Camera is at (4,3,-3), in World Space
+				glm::vec3(0,0,0), // and looks at the origin
+				glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
+			);
 			// THIS MODEL WILL BE APPLIED TO THE WHOLE SCENE 5
 			MODEL_EVERYTHING=glm::mat4(1.0f); // Identity
 			// THIS MODEL WILL BE APPLIED TO LEG 1
