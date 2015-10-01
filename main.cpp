@@ -19,6 +19,7 @@ unsigned char g_eCurrentScene = 1;
 //---------- Main program
 int main(int argc, char **argv) {
 
+	glewExperimental = GL_TRUE;
 	glutInit(&argc, argv);
 
 	//Setting up  The Display

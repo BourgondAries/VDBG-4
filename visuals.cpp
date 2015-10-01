@@ -1,5 +1,6 @@
 #include <math.h>
 #include <iostream>
+#include <thread>
 #include <ctime>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
@@ -264,6 +265,7 @@ void Cleanup( int errorCode, bool bExit )
 
 void DisplayGL()
 {
+	std::this_thread::sleep_for(std::chrono::milliseconds(33));
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  // Clean up the colour of the window
 	// and the depth buffer
 
