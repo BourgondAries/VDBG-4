@@ -549,6 +549,7 @@ void RenderScene5()
 	Model      = glm::scale(Model,glm::vec3(0.2,0.2,0.2));
 	// MVP
 	MVP2        = Projection * View * MODEL_EVERYTHING * MODEL_LEG_2 * Model;
+
 	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP2[0][0]);
 	// Draw the trinagles
 	glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangles
@@ -561,6 +562,7 @@ void RenderScene5()
 
 	// MVP
 	MVP3        = Projection * View * MODEL_EVERYTHING * MODEL_LEG_1 * Model;
+
 	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP3[0][0]);
 	// Draw the trinagles
 	glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangles
