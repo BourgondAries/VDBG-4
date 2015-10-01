@@ -1,0 +1,15 @@
+1. The HIP joints get the MODEL_LEG_X added before their model matrix manipulation.
+2. Add a new array to hold the points. Both sides of the surface are needed.
+	Create an array for the color values, just copy some random values from the other vbo.
+	Make appropriate calls to glGenBuffers and create a global to hold the buffer.
+	Bind the buffers in the RenderScene5 function, when it is appropriate to bind them (before drawing legs)
+	Copy the legs and change a few translations to create the feet.
+
+3. Just overwrite the corresponding values of the vertices. Since the hip and hip joints share the same box, we need to glBindBuffer to another buffer before drawing the hip joints. Using vim this is easy, as we write:
+
+	0.f, 1.f, 0.f
+
+And then `34yyp`, which copies the line 34 times.
+
+4. In the Idle function, we add an entry for renderscene 6. Copy RenderScene5 into a new function RenderScene6, just to avoid overlap when future changes occur. Now make the view rotate and translate such that it focuses on one of the legs using glm::rotate and glm::translate. In this case, the rotation causes an underdamped oscillation which causes the system to not focus on the legs anymore. I'm not sure why this happens, the order does not appear to have any effect.
+
