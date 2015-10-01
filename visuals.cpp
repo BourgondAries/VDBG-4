@@ -304,33 +304,13 @@ void DisplayGL()
 
 	switch ( g_eCurrentScene )
 	{
-	case 1:
-	{
-			RenderScene1();
+		case 1: RenderScene1(); break;
+		case 2: RenderScene2(); break;
+		case 3: RenderScene3(); break;
+		case 4: RenderScene4(); break;
+		case 5: RenderScene5(); break;
+		case 6: RenderScene6(); break;
 	}
-			break;
-	case 2:
-	{
-			RenderScene2();
-	}
-			break;
-	case 3:
-	{
-			RenderScene3();
-	}
-			break;
-	case 4:
-	{
-			RenderScene4();
-	}
-			break;
-	case 5:
-	{
-			RenderScene5();
-	}
-			break;
-	}
-
 
 	glutSwapBuffers();
 	// All drawing commands applied to the
@@ -648,6 +628,89 @@ void RenderScene5()
 	MVPi[7] = MVP5 * Model;
 	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVPi[7][0][0]);
 	// Draw the trinagles
+	glDrawArrays(GL_TRIANGLES, 0, 2*3);
+	//END
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+
+}
+
+void RenderScene6()
+{
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_DEPTH_TEST);
+	Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.01f, 1000.0f);
+	// =================================================================================
+	// ========== HIP
+	// =================================================================================
+	Model      = glm::scale(glm::mat4(1.0f),glm::vec3(1,0.1,0.1)); //cube --> parallelepiped
+	MVP1        = Projection * View* MODEL_EVERYTHING * Model ;
+	glUseProgram(programID_1);
+	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP1[0][0]);
+	glEnableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+	glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,0,(void*)0);
+	glEnableVertexAttribArray(1);
+	glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
+	glVertexAttribPointer(1,3,GL_FLOAT,GL_FALSE,0,(void*)0);
+	glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangles
+	// =================================================================================
+	// ========== HIP JOINT 1
+	// =================================================================================
+	glBindBuffer(GL_ARRAY_BUFFER, hipcolorbuffer);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*) 0);
+	Model      = glm::translate(glm::mat4(1.0f),glm::vec3(1,0,0));
+	Model      = glm::scale(Model,glm::vec3(0.2,0.2,0.2));
+	MVP2        = Projection * View * MODEL_EVERYTHING * MODEL_LEG_2 * Model;
+	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP2[0][0]);
+	glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangles
+	// =================================================================================
+	// ========== HIP JOINT 2
+	// =================================================================================
+	Model = glm::translate(glm::mat4(1.0f),glm::vec3(-1,0,0));
+	Model = glm::scale(Model,glm::vec3(0.2,0.2,0.2));
+	MVP3        = Projection * View * MODEL_EVERYTHING * MODEL_LEG_1 * Model;
+	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP3[0][0]);
+	glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangles
+	// =================================================================================
+	// ========== LEG 1
+	// =================================================================================
+	glBindBuffer(GL_ARRAY_BUFFER, legbuffer);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*) 0);
+	glBindBuffer(GL_ARRAY_BUFFER, legcolorbuffer);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*) 0);
+	Model = glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(0, 0, 1));
+	Model = glm::scale(Model, glm::vec3(1, 1, 1));
+	Model = glm::translate(Model,glm::vec3(-1, -1, 1));
+	MVP4        = Projection * View * MODEL_EVERYTHING * MODEL_LEG_1 * Model;
+	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP4[0][0]);
+	glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangles
+	// =================================================================================
+	// ========== FOOT 1
+	// =================================================================================
+	Model = glm::rotate(glm::mat4(1.0f), 90.0f, glm::vec3(0, 0, 1));
+	Model = glm::scale(Model, glm::vec3(1, 0.5, 1));
+	Model = glm::translate(Model,glm::vec3(-1, 1, 0));
+	MVPi[6] = MVP4 * Model;
+	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVPi[6][0][0]);
+	glDrawArrays(GL_TRIANGLES, 0, 2*3);
+	// =================================================================================
+	// ========== LEG 2
+	// =================================================================================
+	Model = glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(0, 0, 1));
+	Model = glm::scale(Model, glm::vec3(1, 1, 1));
+	Model = glm::translate(Model,glm::vec3(1, -1, 1));
+	MVP5        = Projection * View * MODEL_EVERYTHING * MODEL_LEG_2 * Model;
+	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP5[0][0]);
+	glDrawArrays(GL_TRIANGLES, 0, 2*3); // 12*3 indices starting at 0 -> 12 triangles
+	// =================================================================================
+	// ========== FOOT 2
+	// =================================================================================
+	Model = glm::rotate(glm::mat4(1.0f), -90.0f, glm::vec3(0, 0, 1));
+	Model = glm::scale(Model, glm::vec3(1, 0.5, 1));
+	Model = glm::translate(Model,glm::vec3(1, 1, 0));
+	MVPi[7] = MVP5 * Model;
+	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVPi[7][0][0]);
 	glDrawArrays(GL_TRIANGLES, 0, 2*3);
 	//END
 	glDisableVertexAttribArray(0);
