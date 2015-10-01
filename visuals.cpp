@@ -26,7 +26,7 @@ namespace ttl {
 
 // This will be used with shader
 //GLuint VertexArrayID;
-GLuint vertexbuffer, colorbuffer;
+GLuint vertexbuffer, colorbuffer, legbuffer, legcolorbuffer;
 GLuint objvertexbuffer; // for obj
 GLuint programID_1, programID_2;
 
@@ -36,6 +36,7 @@ GLuint MatrixID; // Handler Matrix for moving the cam
 glm::mat4 MVP; // FInal Homogeneous Matrix
 
 glm::mat4 MVP1,MVP2,MVP3,MVP4,MVP5, MODEL_EVERYTHING, MODEL_LEG_1, MODEL_LEG_2;
+glm::mat4 MVPi[10];
 glm::mat4 Projection,View,Model;
 
 // Variables for moving camera with mouse
@@ -569,27 +570,52 @@ void RenderScene5()
 	// =================================================================================
 	// ========== LEG 1
 	// =================================================================================
-	// transform the cube
-	Model      = glm::rotate(glm::mat4(1.0f),90.0f,glm::vec3(0,0,1));
-	Model      = glm::scale(Model,glm::vec3(1,0.1,0.1));
-	Model      = glm::translate(Model,glm::vec3(-1,10,0));
+	glBindBuffer(GL_ARRAY_BUFFER, legbuffer);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*) 0);
+	glBindBuffer(GL_ARRAY_BUFFER, legcolorbuffer);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*) 0);
+
+	Model = glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(0, 0, 1));
+	Model = glm::scale(Model, glm::vec3(1, 1, 1));
+	Model = glm::translate(Model,glm::vec3(-1, -1, 1));
 	// MVP
-	MVP4        = Projection * View * MODEL_EVERYTHING* MODEL_LEG_1* Model;
+	MVP4        = Projection * View * MODEL_EVERYTHING * MODEL_LEG_1 * Model;
 	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP4[0][0]);
 	// Draw the trinagles
 	glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangles
 	// =================================================================================
+	// ========== FOOT 1
+	// =================================================================================
+	Model = glm::rotate(glm::mat4(1.0f), 90.0f, glm::vec3(0, 0, 1));
+	Model = glm::scale(Model, glm::vec3(1, 0.5, 1));
+	Model = glm::translate(Model,glm::vec3(-1, 1, 0));
+	// MVP
+	MVPi[6] = MVP4 * Model;
+	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVPi[6][0][0]);
+	// Draw the trinagles
+	glDrawArrays(GL_TRIANGLES, 0, 2*3);
+	// =================================================================================
 	// ========== LEG 2
 	// =================================================================================
-	// Transform the cube
-	Model      = glm::rotate(glm::mat4(1.0f),-90.0f,glm::vec3(0,0,1));
-	Model      = glm::scale(Model,glm::vec3(1,0.1,0.1));
-	Model      = glm::translate(Model,glm::vec3(1,10,0));
+	Model = glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(0, 0, 1));
+	Model = glm::scale(Model, glm::vec3(1, 1, 1));
+	Model = glm::translate(Model,glm::vec3(1, -1, 1));
 	// MVP
-	MVP5        = Projection * View *MODEL_EVERYTHING* MODEL_LEG_2* Model;
+	MVP5        = Projection * View * MODEL_EVERYTHING * MODEL_LEG_2 * Model;
 	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP5[0][0]);
 	// Draw the trinagles
-	glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangles
+	glDrawArrays(GL_TRIANGLES, 0, 2*3); // 12*3 indices starting at 0 -> 12 triangles
+	// =================================================================================
+	// ========== FOOT 2
+	// =================================================================================
+	Model = glm::rotate(glm::mat4(1.0f), -90.0f, glm::vec3(0, 0, 1));
+	Model = glm::scale(Model, glm::vec3(1, 0.5, 1));
+	Model = glm::translate(Model,glm::vec3(1, 1, 0));
+	// MVP
+	MVPi[7] = MVP5 * Model;
+	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVPi[7][0][0]);
+	// Draw the trinagles
+	glDrawArrays(GL_TRIANGLES, 0, 2*3);
 	//END
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
@@ -661,6 +687,24 @@ void SetupGL() //
 
 	programID_1 = LoadShaders(vertex.c_str(), fragment.c_str());
 
+	static const GLfloat g_vertex_buffer_data_leg[] = {
+		0.f, -1.f, 0.f,
+		0.f, 1.f, -1.f,
+		0.f, -1.f, -1.f,
+
+		0.f, -1.f, -1.f,
+		0.f, 1.f, -1.f,
+		0.f, -1.f, 0.f,
+	};
+	static const GLfloat g_vertex_buffer_data_leg_color[] = {
+		0.583f,  0.771f,  0.014f,
+		0.609f,  0.115f,  0.436f,
+		0.327f,  0.483f,  0.844f,
+
+		0.327f,  0.483f,  0.844f,
+		0.609f,  0.115f,  0.436f,
+		0.583f,  0.771f,  0.014f,
+	};
 	//VBO -- VERTEX
 	static const GLfloat g_vertex_buffer_data[] = {
 		-1.0f,-1.0f,-1.0f, // triangle 1 : begin
@@ -752,4 +796,13 @@ void SetupGL() //
 	glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
 	// Give our vertices to OpenGL.
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_color_buffer_data), g_color_buffer_data, GL_STATIC_DRAW);
+
+	glGenBuffers(1, &legbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, legbuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data_leg), g_vertex_buffer_data_leg, GL_STATIC_DRAW);
+
+	glGenBuffers(1, &legcolorbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, legcolorbuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data_leg_color), g_vertex_buffer_data_leg_color, GL_STATIC_DRAW);
+
 }
