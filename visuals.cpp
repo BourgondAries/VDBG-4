@@ -135,9 +135,9 @@ void Idle()
 	if (g_eCurrentScene == 5)
 	{
 		counter = counter + 0.002 * dt;
-		MODEL_EVERYTHING = glm::translate(MODEL_EVERYTHING,glm::vec3(0,0,0.0013*counter));
-		MODEL_LEG_1 = glm::rotate(MODEL_LEG_1, float(cos(counter)),glm::vec3(1,0,0));
-		MODEL_LEG_2 = glm::rotate(MODEL_LEG_2, float(-cos(counter)),glm::vec3(1,0,0));
+		MODEL_EVERYTHING = glm::translate(MODEL_EVERYTHING, glm::vec3(0, 0, 0.0013 * counter));
+		MODEL_LEG_1 = glm::rotate(MODEL_LEG_1, float(cos(counter)), glm::vec3(1, 0, 0));
+		MODEL_LEG_2 = glm::rotate(MODEL_LEG_2, float(-cos(counter)), glm::vec3(1, 0, 0));
 	}
 	last_time = current_time; // update when the last timer;
 }
@@ -310,15 +310,15 @@ void RenderScene1()
 	// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
 	Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
 	// Camera matrix
-	View       = glm::lookAt(
-							glm::vec3(5.63757, 1.7351, -2.19067), // Camera is at (4,3,-3), in World Space
-							glm::vec3(0,0,0), // and looks at the origin
-							glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
-							);
+	View = glm::lookAt(
+		glm::vec3(5.63757, 1.7351, -2.19067), // Camera is at (4,3,-3), in World Space
+		glm::vec3(0,0,0), // and looks at the origin
+		glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
+	);
 	// Model matrix : an identity matrix (model will be at the origin)
-	Model      = glm::mat4(1.0f);
+	Model = glm::mat4(1.0f);
 	// Our ModelViewProjection : multiplication of our 3 matrices
-	MVP        = Projection * View * Model; // Remember, matrix multiplication is the other way around
+	MVP = Projection * View * Model; // Remember, matrix multiplication is the other way around
 	// Use our shader
 	glUseProgram(programID_1);
 	// Send our transformation to the currently bound shader,
@@ -328,25 +328,25 @@ void RenderScene1()
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 	glVertexAttribPointer(
-							0,                  // attribute. No particular reason for 0, but must match the layout in the shader.
-							3,                  // size
-							GL_FLOAT,           // type
-							GL_FALSE,           // normalized?
-							0,                  // stride
-							(void*)0            // array buffer offset
-							);
+		0,                  // attribute. No particular reason for 0, but must match the layout in the shader.
+		3,                  // size
+		GL_FLOAT,           // type
+		GL_FALSE,           // normalized?
+		0,                  // stride
+		(void*)0            // array buffer offset
+	);
 
 	// 2nd attribute buffer : colors
 	glEnableVertexAttribArray(1);
 	glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
 	glVertexAttribPointer(
-							1,                                // attribute. No particular reason for 1, but must match the layout in the shader.
-							3,                                // size
-							GL_FLOAT,                         // type
-							GL_FALSE,                         // normalized?
-							0,                                // stride
-							(void*)0                          // array buffer offset
-							);
+		1,                                // attribute. No particular reason for 1, but must match the layout in the shader.
+		3,                                // size
+		GL_FLOAT,                         // type
+		GL_FALSE,                         // normalized?
+		0,                                // stride
+		(void*)0                          // array buffer offset
+	);
 
 	// Draw the triangles
 	glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangles
@@ -361,11 +361,11 @@ void RenderScene2()
 	// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
 	Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
 	// Camera matrix
-	View       = glm::lookAt(
-							glm::vec3(5.63757, 1.7351, -2.19067), // Camera is at (4,3,-3), in World Space
-							glm::vec3(0,0,0), // and looks at the origin
-							glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
-							);
+	View = glm::lookAt(
+		glm::vec3(5.63757, 1.7351, -2.19067), // Camera is at (4,3,-3), in World Space
+		glm::vec3(0,0,0), // and looks at the origin
+		glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
+	);
 	// Model matrix : an identity matrix (model will be at the origin)
 	Model      = glm::mat4(1.0f);
 	// Our ModelViewProjection : multiplication of our 3 matrices
@@ -384,25 +384,25 @@ void RenderScene2()
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 	glVertexAttribPointer(
-							0,                  // attribute. No particular reason for 0, but must match the layout in the shader.
-							3,                  // size
-							GL_FLOAT,           // type
-							GL_FALSE,           // normalized?
-							0,                  // stride
-							(void*)0            // array buffer offset
-							);
+		0,                  // attribute. No particular reason for 0, but must match the layout in the shader.
+		3,                  // size
+		GL_FLOAT,           // type
+		GL_FALSE,           // normalized?
+		0,                  // stride
+		(void*)0            // array buffer offset
+	);
 
 	// 2nd attribute buffer : colors
 	glEnableVertexAttribArray(1);
 	glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
 	glVertexAttribPointer(
-							1,                                // attribute. No particular reason for 1, but must match the layout in the shader.
-							3,                                // size
-							GL_FLOAT,                         // type
-							GL_FALSE,                         // normalized?
-							0,                                // stride
-							(void*)0                          // array buffer offset
-							);
+		1,                                // attribute. No particular reason for 1, but must match the layout in the shader.
+		3,                                // size
+		GL_FLOAT,                         // type
+		GL_FALSE,                         // normalized?
+		0,                                // stride
+		(void*)0                          // array buffer offset
+	);
 
 	// Draw the triangles
 	glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangles
@@ -414,6 +414,52 @@ void RenderScene3()
 {
 	// Disable Back Face Culling
 	glDisable(GL_CULL_FACE);
+	// Enable depth test
+	glEnable(GL_DEPTH_TEST);
+	// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
+	Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.01f, 1000.0f);
+	// Model matrix : an identity matrix (model will be at the origin)
+	Model      = glm::mat4(1.0f);
+	// Our ModelViewProjection : multiplication of our 3 matrices
+	MVP        = Projection * View * Model; // Remember, matrix multiplication is the other way around
+	// Use our shader
+	glUseProgram(programID_1);
+	// Send our transformation to the currently bound shader,
+	// in the "MVP" uniform
+	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
+	// 1rst attribute buffer : vertices
+	glEnableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+	glVertexAttribPointer(
+		0,                  // attribute. No particular reason for 0, but must match the layout in the shader.
+		3,                  // size
+		GL_FLOAT,           // type
+		GL_FALSE,           // normalized?
+		0,                  // stride
+		(void*)0            // array buffer offset
+	);
+
+	// 2nd attribute buffer : colors
+	glEnableVertexAttribArray(1);
+	glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
+	glVertexAttribPointer(
+		1,                                // attribute. No particular reason for 1, but must match the layout in the shader.
+		3,                                // size
+		GL_FLOAT,                         // type
+		GL_FALSE,                         // normalized?
+		0,                                // stride
+		(void*)0                          // array buffer offset
+	);
+
+	// Draw the triangles
+	glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangles
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+}
+void RenderScene4()
+{
+	// Enable bac-face culling
+	glEnable(GL_CULL_FACE);
 	// Enable depth test
 	glEnable(GL_DEPTH_TEST);
 	// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
@@ -456,141 +502,93 @@ void RenderScene3()
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
 }
-void RenderScene4()
-{
-// Enable bac-face culling
-glEnable(GL_CULL_FACE);
-// Enable depth test
-glEnable(GL_DEPTH_TEST);
-// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
-Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.01f, 1000.0f);
-// Model matrix : an identity matrix (model will be at the origin)
-Model      = glm::mat4(1.0f);
-// Our ModelViewProjection : multiplication of our 3 matrices
-MVP        = Projection * View * Model; // Remember, matrix multiplication is the other way around
-// Use our shader
-glUseProgram(programID_1);
-// Send our transformation to the currently bound shader,
-// in the "MVP" uniform
-glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
-// 1rst attribute buffer : vertices
-glEnableVertexAttribArray(0);
-glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-glVertexAttribPointer(
-						0,                  // attribute. No particular reason for 0, but must match the layout in the shader.
-						3,                  // size
-						GL_FLOAT,           // type
-						GL_FALSE,           // normalized?
-						0,                  // stride
-						(void*)0            // array buffer offset
-						);
-
-// 2nd attribute buffer : colors
-glEnableVertexAttribArray(1);
-glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
-glVertexAttribPointer(
-						1,                                // attribute. No particular reason for 1, but must match the layout in the shader.
-						3,                                // size
-						GL_FLOAT,                         // type
-						GL_FALSE,                         // normalized?
-						0,                                // stride
-						(void*)0                          // array buffer offset
-						);
-
-// Draw the triangles
-glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangles
-glDisableVertexAttribArray(0);
-glDisableVertexAttribArray(1);
-
-
-
-}
 
 void RenderScene5()
 {
-// THIS MODEL IS APPLIED TO THE WHOLE SCENE 5
-//    MODEL_EVERYTHING = IT is initalized as identity matrix
+	// THIS MODEL IS APPLIED TO THE WHOLE SCENE 5
+	//    MODEL_EVERYTHING = IT is initalized as identity matrix
 
-// THIS MODEL WILL BE APPLIED TO LEG 1
-//    MODEL_LEG_1= IT is initalized as identity matrix
+	// THIS MODEL WILL BE APPLIED TO LEG 1
+	//    MODEL_LEG_1= IT is initalized as identity matrix
 
-// THIS MODEL WILL BE APPLIED TO LEG 2
-//    MODEL_LEG_2= IT is initalized as identity matrix
+	// THIS MODEL WILL BE APPLIED TO LEG 2
+	//    MODEL_LEG_2= IT is initalized as identity matrix
 
-//Enable back-Face culling
-glEnable(GL_CULL_FACE);
-// Enable depth test
-glEnable(GL_DEPTH_TEST);
-// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
-Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.01f, 1000.0f);
-// =================================================================================
-// ========== HIP
-// =================================================================================
-// Transform CUBE
-Model      = glm::scale(glm::mat4(1.0f),glm::vec3(1,0.1,0.1)); //cube --> parallelepiped
-// Our ModelViewProjection : multiplication of our 3 matrices
-MVP1        = Projection * View* MODEL_EVERYTHING * Model ;
-// Use our shader
-glUseProgram(programID_1);
-glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP1[0][0]);
-// 1rst attribute buffer : vertices
-glEnableVertexAttribArray(0);
-glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,0,(void*)0);
-glEnableVertexAttribArray(1);
-glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
-glVertexAttribPointer(1,3,GL_FLOAT,GL_FALSE,0,(void*)0);
-// Draw the trinagles
-glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangles
-// =================================================================================
-// ========== HIP JOINT 1
-// =================================================================================
-//transform the cube
-Model      = glm::translate(glm::mat4(1.0f),glm::vec3(1,0,0));
-Model      = glm::scale(Model,glm::vec3(0.2,0.2,0.2));
-// MVP
-MVP2        = Projection * View * MODEL_EVERYTHING * Model;
-glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP2[0][0]);
-// Draw the trinagles
-glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangles
-// =================================================================================
-// ========== HIP JOINT 2
-// =================================================================================
-// Transform the cube
-Model      = glm::translate(glm::mat4(1.0f),glm::vec3(-1,0,0));
-Model      = glm::scale(Model,glm::vec3(0.2,0.2,0.2));
-// MVP
-MVP3        = Projection * View * MODEL_EVERYTHING * Model;
-glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP3[0][0]);
-// Draw the trinagles
-glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangles
-// =================================================================================
-// ========== LEG 1
-// =================================================================================
-// transform the cube
-Model      = glm::rotate(glm::mat4(1.0f),90.0f,glm::vec3(0,0,1));
-Model      = glm::scale(Model,glm::vec3(1,0.1,0.1));
-Model      = glm::translate(Model,glm::vec3(-1,10,0));
-// MVP
-MVP4        = Projection * View * MODEL_EVERYTHING* MODEL_LEG_1* Model;
-glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP4[0][0]);
-// Draw the trinagles
-glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangles
-// =================================================================================
-// ========== LEG 2
-// =================================================================================
-// Transform the cube
-Model      = glm::rotate(glm::mat4(1.0f),-90.0f,glm::vec3(0,0,1));
-Model      = glm::scale(Model,glm::vec3(1,0.1,0.1));
-Model      = glm::translate(Model,glm::vec3(1,10,0));
-// MVP
-MVP5        = Projection * View *MODEL_EVERYTHING* MODEL_LEG_2* Model;
-glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP5[0][0]);
-// Draw the trinagles
-glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangles
-//END
-glDisableVertexAttribArray(0);
-glDisableVertexAttribArray(1);
+	//Enable back-Face culling
+	glEnable(GL_CULL_FACE);
+	// Enable depth test
+	glEnable(GL_DEPTH_TEST);
+	// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
+	Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.01f, 1000.0f);
+	// =================================================================================
+	// ========== HIP
+	// =================================================================================
+	// Transform CUBE
+	Model      = glm::scale(glm::mat4(1.0f),glm::vec3(1,0.1,0.1)); //cube --> parallelepiped
+	// Our ModelViewProjection : multiplication of our 3 matrices
+	MVP1        = Projection * View* MODEL_EVERYTHING * Model ;
+	// Use our shader
+	glUseProgram(programID_1);
+	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP1[0][0]);
+	// 1rst attribute buffer : vertices
+	glEnableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+	glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,0,(void*)0);
+	glEnableVertexAttribArray(1);
+	glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
+	glVertexAttribPointer(1,3,GL_FLOAT,GL_FALSE,0,(void*)0);
+	// Draw the trinagles
+	glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangles
+	// =================================================================================
+	// ========== HIP JOINT 1
+	// =================================================================================
+	//transform the cube
+	Model      = glm::translate(glm::mat4(1.0f),glm::vec3(1,0,0));
+	Model      = glm::scale(Model,glm::vec3(0.2,0.2,0.2));
+	// MVP
+	MVP2        = Projection * View * MODEL_EVERYTHING * MODEL_LEG_2 * Model;
+	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP2[0][0]);
+	// Draw the trinagles
+	glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangles
+	// =================================================================================
+	// ========== HIP JOINT 2
+	// =================================================================================
+	// Transform the cube
+	Model = glm::translate(glm::mat4(1.0f),glm::vec3(-1,0,0));
+	Model = glm::scale(Model,glm::vec3(0.2,0.2,0.2));
+
+	// MVP
+	MVP3        = Projection * View * MODEL_EVERYTHING * MODEL_LEG_1 * Model;
+	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP3[0][0]);
+	// Draw the trinagles
+	glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangles
+	// =================================================================================
+	// ========== LEG 1
+	// =================================================================================
+	// transform the cube
+	Model      = glm::rotate(glm::mat4(1.0f),90.0f,glm::vec3(0,0,1));
+	Model      = glm::scale(Model,glm::vec3(1,0.1,0.1));
+	Model      = glm::translate(Model,glm::vec3(-1,10,0));
+	// MVP
+	MVP4        = Projection * View * MODEL_EVERYTHING* MODEL_LEG_1* Model;
+	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP4[0][0]);
+	// Draw the trinagles
+	glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangles
+	// =================================================================================
+	// ========== LEG 2
+	// =================================================================================
+	// Transform the cube
+	Model      = glm::rotate(glm::mat4(1.0f),-90.0f,glm::vec3(0,0,1));
+	Model      = glm::scale(Model,glm::vec3(1,0.1,0.1));
+	Model      = glm::translate(Model,glm::vec3(1,10,0));
+	// MVP
+	MVP5        = Projection * View *MODEL_EVERYTHING* MODEL_LEG_2* Model;
+	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP5[0][0]);
+	// Draw the trinagles
+	glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangles
+	//END
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
 
 }
 
